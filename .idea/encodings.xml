@@ -5,6 +5,10 @@
     <file url="file://$PROJECT_DIR$/common/foodie-cloud-common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/foodie-cloud-shared-pojo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/foodie-cloud-shared-pojo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/common/foodie-cloud-web-components/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/common/foodie-cloud-web-components/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform/foodie-cloud-registry-center/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/platform/foodie-cloud-registry-center/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

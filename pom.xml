@@ -10,6 +10,10 @@
     <modules>
         <module>common/foodie-cloud-common</module>
         <module>common/foodie-cloud-shared-pojo</module>
+        <module>platform/foodie-cloud-registry-center</module>
+        <module>foodie-cloud-web-components</module>
+        <module>foodie-cloud-web-components</module>
+        <module>common/foodie-cloud-web-components</module>
     </modules>
 
     <packaging>pom</packaging>
