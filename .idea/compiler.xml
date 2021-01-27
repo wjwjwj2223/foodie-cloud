@@ -6,10 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="foodie-cloud-web-components" />
+        <module name="foodie-item-mapper" />
         <module name="foodie-cloud-registry-center" />
-        <module name="foodie-cloud-common" />
+        <module name="foodie-cloud-web-components" />
         <module name="foodie-cloud-shared-pojo" />
+        <module name="foodie-item-api" />
+        <module name="foodie-cloud-common" />
+        <module name="foodie-item-pojo" />
       </profile>
     </annotationProcessing>
   </component>
