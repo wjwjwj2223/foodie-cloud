@@ -11,8 +11,10 @@
         <module name="foodie-cloud-web-components" />
         <module name="foodie-cloud-shared-pojo" />
         <module name="foodie-item-api" />
+        <module name="foodie-item-web" />
         <module name="foodie-cloud-common" />
         <module name="foodie-item-pojo" />
+        <module name="foodie-item-service" />
       </profile>
     </annotationProcessing>
   </component>
