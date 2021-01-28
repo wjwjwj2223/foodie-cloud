@@ -7,11 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="foodie-item-mapper" />
+        <module name="foodie-user-api" />
+        <module name="foodie-user-pojo" />
         <module name="foodie-cloud-registry-center" />
         <module name="foodie-cloud-web-components" />
         <module name="foodie-cloud-shared-pojo" />
         <module name="foodie-item-api" />
         <module name="foodie-item-web" />
+        <module name="foodie-user-mapper" />
         <module name="foodie-cloud-common" />
         <module name="foodie-item-pojo" />
         <module name="foodie-item-service" />
