@@ -2,7 +2,7 @@ package com.imooc.user.controller.center;
 
 import com.imooc.controller.BaseController;
 import com.imooc.pojo.IMOOCJSONResult;
-import com.imooc.user.bo.center.CenterUserBO;
+import com.imooc.user.pojo.bo.center.CenterUserBO;
 import com.imooc.user.pojo.Users;
 import com.imooc.user.resource.FileUpload;
 import com.imooc.user.service.center.CenterUserService;

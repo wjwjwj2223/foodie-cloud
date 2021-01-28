@@ -1,7 +1,6 @@
 package com.imooc.user.service.center;
 
-
-import com.imooc.user.bo.center.CenterUserBO;
+import com.imooc.user.pojo.bo.center.CenterUserBO;
 import com.imooc.user.pojo.Users;
 import org.springframework.web.bind.annotation.*;
 

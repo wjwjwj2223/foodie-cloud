@@ -3,7 +3,7 @@ package com.imooc.user.service.impl;
 import com.imooc.enums.YesOrNo;
 import com.imooc.user.mapper.UserAddressMapper;
 import com.imooc.user.pojo.UserAddress;
-import com.imooc.user.bo.AddressBO;
+import com.imooc.user.pojo.bo.AddressBO;
 import com.imooc.user.service.AddressService;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.BeanUtils;

@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="foodie-user-pojo" />
+        <module name="foodie-order-pojo" />
         <module name="foodie-item-service" />
         <module name="foodie-cloud-web-components" />
         <module name="foodie-item-api" />

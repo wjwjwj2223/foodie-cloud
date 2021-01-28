@@ -1,6 +1,6 @@
 package com.imooc.user.service;
 
-import com.imooc.user.bo.AddressBO;
+import com.imooc.user.pojo.bo.AddressBO;
 import com.imooc.user.pojo.UserAddress;
 import org.springframework.web.bind.annotation.*;
 

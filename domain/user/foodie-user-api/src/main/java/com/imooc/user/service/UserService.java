@@ -1,7 +1,7 @@
 package com.imooc.user.service;
 
 
-import com.imooc.user.bo.UserBO;
+import com.imooc.user.pojo.bo.UserBO;
 import com.imooc.user.pojo.Users;
 import org.springframework.web.bind.annotation.*;
 

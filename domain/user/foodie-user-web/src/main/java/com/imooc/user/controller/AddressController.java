@@ -2,7 +2,7 @@ package com.imooc.user.controller;
 
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.user.pojo.UserAddress;
-import com.imooc.user.bo.AddressBO;
+import com.imooc.user.pojo.bo.AddressBO;
 import com.imooc.user.service.AddressService;
 import com.imooc.utils.MobileEmailUtils;
 import io.swagger.annotations.Api;

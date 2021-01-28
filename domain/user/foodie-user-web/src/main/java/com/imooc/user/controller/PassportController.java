@@ -4,7 +4,7 @@ import com.imooc.controller.BaseController;
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.pojo.ShopcartBO;
 import com.imooc.user.pojo.Users;
-import com.imooc.user.bo.UserBO;
+import com.imooc.user.pojo.bo.UserBO;
 import com.imooc.user.service.UserService;
 import com.imooc.utils.CookieUtils;
 import com.imooc.utils.JsonUtils;

@@ -2,7 +2,7 @@ package com.imooc.user.service.impl.center;
 
 import com.imooc.user.mapper.UsersMapper;
 import com.imooc.user.pojo.Users;
-import com.imooc.user.bo.center.CenterUserBO;
+import com.imooc.user.pojo.bo.center.CenterUserBO;
 import com.imooc.user.service.center.CenterUserService;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.BeanUtils;
