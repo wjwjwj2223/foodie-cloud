@@ -10,25 +10,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>foodie-order-pojo</artifactId>
+    <artifactId>foodie-order-mapper</artifactId>
 
     <dependencies>
+
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>foodie-order-pojo</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>foodie-cloud-shared-pojo</artifactId>
+            <artifactId>foodie-cloud-common</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
 
 </project>
