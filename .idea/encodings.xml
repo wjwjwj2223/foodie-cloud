@@ -23,6 +23,10 @@
     <file url="file://$PROJECT_DIR$/domain/user/foodie-user-mapper/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/domain/user/foodie-user-pojo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/domain/user/foodie-user-pojo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/domain/user/foodie-user-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/domain/user/foodie-user-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/domain/user/foodie-user-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/domain/user/foodie-user-web/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/platform/foodie-cloud-registry-center/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/platform/foodie-cloud-registry-center/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
