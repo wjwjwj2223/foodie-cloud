@@ -4,6 +4,7 @@ import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.YesOrNo;
 import com.imooc.item.pojo.Items;
 import com.imooc.item.pojo.ItemsSpec;
+import com.imooc.item.service.ItemService;
 import com.imooc.order.mapper.OrderItemsMapper;
 import com.imooc.order.mapper.OrderStatusMapper;
 import com.imooc.order.mapper.OrdersMapper;
@@ -17,6 +18,7 @@ import com.imooc.order.pojo.vo.OrderVO;
 import com.imooc.order.service.OrderService;
 import com.imooc.pojo.ShopcartBO;
 import com.imooc.user.pojo.UserAddress;
+import com.imooc.user.service.AddressService;
 import com.imooc.utils.DateUtil;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +44,11 @@ public class OrderServiceImpl implements OrderService {
     private OrderStatusMapper orderStatusMapper;
 
     //TODO 学了feign 在把注释打开
-//    @Autowired
-//    private AddressService addressService;
-//    @Autowired
-//    private ItemService itemService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private ItemService itemService;
 
-    @Autowired
-    private LoadBalancerClient client;
-    @Autowired
-    private RestTemplate template;
 
     @Autowired
     private Sid sid;
@@ -72,13 +70,7 @@ public class OrderServiceImpl implements OrderService {
 
         String orderId = sid.nextShort();
         //FIXME 等待feign 章节再来简化
-//        UserAddress address = addressService.queryUserAddres(userId, addressId);
-        ServiceInstance instance = client.choose("FOODIE-USER-SERVICE");
-        String url = String.format("http://%s:%s/address-api/queryAddress" + "?userId=%s&addressId=%s",
-                instance.getHost(),
-                instance.getPort(),
-                userId, addressId);
-        UserAddress address = template.getForObject(url, UserAddress.class);
+        UserAddress address = addressService.queryUserAddres(userId, addressId);
 
         // 1. 新订单数据保存
         Orders newOrder = new Orders();
@@ -117,39 +109,18 @@ public class OrderServiceImpl implements OrderService {
             toBeRemovedShopcatdList.add(cartItem);
 
             // 2.1 根据规格id，查询规格的具体信息，主要获取价格
-//            ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
             //FIXME 等待feign 章节再来简化
-            ServiceInstance instance1 = client.choose("FOODIE-ITEM-SERVICE");
-            String url1 = String.format("http://%s:%s/item-api/itemSpec" + "?specId=%s",
-                    instance1.getHost(),
-                    instance1.getPort(),
-                    itemSpecId);
-            ItemsSpec itemSpec = template.getForObject(url1, ItemsSpec.class);
+            ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
             totalAmount += itemSpec.getPriceNormal() * buyCounts;
             realPayAmount += itemSpec.getPriceDiscount() * buyCounts;
 
             // 2.2 根据商品id，获得商品信息以及商品图片
             String itemId = itemSpec.getItemId();
             //FIXME 等待feign 章节再来简化
-//            Items item = itemService.queryItemById(itemId);
-            ServiceInstance instance2 = client.choose("FOODIE-ITEM-SERVICE");
-            String url2 = String.format("http://%s:%s/item-api/item" + "?itemId=%s",
-                    instance2.getHost(),
-                    instance2.getPort(),
-                    itemId);
-            Items item = template.getForObject(url2, Items.class);
+            Items item = itemService.queryItemById(itemId);
 
-
-//            String imgUrl = itemService.queryItemMainImgById(itemId);
             //FIXME 等待feign 章节再来简化
-//            Items item = itemService.queryItemById(itemId);
-            ServiceInstance instance3 = client.choose("FOODIE-ITEM-SERVICE");
-            String url3 = String.format("http://%s:%s/item-api/primaryImage" + "?itemId=%s",
-                    instance3.getHost(),
-                    instance3.getPort(),
-                    itemId);
-            String imgUrl = template.getForObject(url3, String.class);
-
+            String imgUrl = itemService.queryItemMainImgById(itemId);
             // 2.3 循环保存子订单数据到数据库
             String subOrderId = sid.nextShort();
             OrderItems subOrderItem = new OrderItems();
@@ -165,16 +136,8 @@ public class OrderServiceImpl implements OrderService {
             orderItemsMapper.insert(subOrderItem);
 
             // 2.4 在用户提交订单以后，规格表中需要扣除库存
-//            itemService.decreaseItemSpecStock(itemSpecId, buyCounts);
             //FIXME 等待feign 章节再来简化
-            Map<String, Object> map = new HashMap<>();
-            map.put("specId", itemSpecId);
-            map.put("buyCounts", buyCounts);
-            ServiceInstance instance4 = client.choose("FOODIE-ITEM-SERVICE");
-            String url4 = String.format("http://%s:%s/item-api/decreaseStock",
-                    instance4.getHost(),
-                    instance4.getPort());
-            template.postForLocation(url4, map);
+            itemService.decreaseItemSpecStock(itemSpecId, buyCounts);
         }
 
         newOrder.setTotalAmount(totalAmount);

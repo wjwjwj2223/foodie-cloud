@@ -2,6 +2,7 @@ package com.imooc.order.controller.center;
 
 import com.imooc.controller.BaseController;
 import com.imooc.enums.YesOrNo;
+import com.imooc.item.service.ItemCommentsService;
 import com.imooc.order.pojo.OrderItems;
 import com.imooc.order.pojo.Orders;
 import com.imooc.order.pojo.bo.center.OrderItemsCommentBO;
@@ -31,12 +32,10 @@ public class MyCommentsController extends BaseController {
     private MyCommentsService myCommentsService;
 
     @Autowired
-    private MyOrdersService myOrdersService;
+    private ItemCommentsService itemCommentsService;
 
     @Autowired
-    private LoadBalancerClient client;
-    @Autowired
-    private RestTemplate template;
+    private MyOrdersService myOrdersService;
 
     @ApiOperation(value = "查询订单列表", notes = "查询订单列表", httpMethod = "POST")
     @PostMapping("/pending")
@@ -108,20 +107,11 @@ public class MyCommentsController extends BaseController {
             pageSize = COMMON_PAGE_SIZE;
         }
 
-//        PagedGridResult grid = myCommentsService.queryMyComments(userId,
-//                page,
-//                pageSize);
-
-        //FIXME 等待feign 章节再来简化
-        ServiceInstance instance1 = client.choose("FOODIE-ITEM-SERVICE");
-        String url1 = String.format("http://%s:%s/item-comments-api/myComments" + "?userId=%s&page=%s&pageSize=%s",
-                instance1.getHost(),
-                instance1.getPort(),
-                userId,
+        PagedGridResult grid = itemCommentsService.queryMyComments(userId,
                 page,
                 pageSize);
-        PagedGridResult result = template.getForObject(url1, PagedGridResult.class);
-        return IMOOCJSONResult.ok(result);
+
+        return IMOOCJSONResult.ok(grid);
     }
 
 }

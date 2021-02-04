@@ -3,6 +3,7 @@ package com.imooc.order.service.impl.center;
 import com.github.pagehelper.PageHelper;
 import com.imooc.enums.YesOrNo;
 import com.imooc.item.pojo.vo.MyCommentVO;
+import com.imooc.item.service.ItemCommentsService;
 import com.imooc.order.mapper.*;
 import com.imooc.order.pojo.OrderItems;
 import com.imooc.order.pojo.OrderStatus;
@@ -42,9 +43,7 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
 //    public ItemsCommentsMapperCustom itemsCommentsMapperCustom;
     //TODO feign 章节改成item调用
     @Autowired
-    private LoadBalancerClient client;
-    @Autowired
-    private RestTemplate template;
+    private ItemCommentsService itemCommentsService;
 
     @Autowired
     private Sid sid;
@@ -69,12 +68,7 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("commentList", commentList);
-//        itemsCommentsMapperCustom.saveComments(map);
-        ServiceInstance instance = client.choose("FOODIE-ITEM-SERVICE");
-        String url = String.format("http://%s:%s/item-comments-api/saveComments",
-                instance.getHost(),
-                instance.getPort());
-        template.postForLocation(url, map);
+        itemCommentsService.saveComments(map);
 
 
         // 2. 修改订单表改已评价 orders
