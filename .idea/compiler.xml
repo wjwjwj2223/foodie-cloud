@@ -28,6 +28,7 @@
         <module name="foodie-order-service" />
         <module name="foodie-item-web" />
         <module name="foodie-user-api" />
+        <module name="hystrix-turbine" />
         <module name="foodie-order-api" />
         <module name="foodie-search-pojo" />
         <module name="foodie-user-web" />
