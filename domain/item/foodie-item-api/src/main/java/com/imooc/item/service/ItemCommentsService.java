@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/*
+*  内部的降级 放到item-server 中实现
+*  调用方的降级（订单中心调用商品中心的服务） 由订单中心定义降级逻辑
+*
+* */
+
 @FeignClient("foodie-item-service")
 @RequestMapping("item-comments-api")
 public interface ItemCommentsService {

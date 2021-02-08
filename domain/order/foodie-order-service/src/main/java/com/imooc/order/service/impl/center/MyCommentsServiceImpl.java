@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.imooc.enums.YesOrNo;
 import com.imooc.item.pojo.vo.MyCommentVO;
 import com.imooc.item.service.ItemCommentsService;
+import com.imooc.order.fallback.itemservice.ItemCommentsFeignClient;
 import com.imooc.order.mapper.*;
 import com.imooc.order.pojo.OrderItems;
 import com.imooc.order.pojo.OrderStatus;
@@ -43,7 +44,7 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
 //    public ItemsCommentsMapperCustom itemsCommentsMapperCustom;
     //TODO feign 章节改成item调用
     @Autowired
-    private ItemCommentsService itemCommentsService;
+    private ItemCommentsFeignClient itemCommentsService;
 
     @Autowired
     private Sid sid;
