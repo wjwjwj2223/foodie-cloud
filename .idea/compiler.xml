@@ -16,6 +16,7 @@
         <module name="foodie-item-pojo" />
         <module name="foodie-order-web" />
         <module name="foodie-cloud-shared-pojo" />
+        <module name="hystrix-dashboard" />
         <module name="foodie-cloud-common" />
         <module name="foodie-cloud-registry-center" />
         <module name="foodie-item-mapper" />

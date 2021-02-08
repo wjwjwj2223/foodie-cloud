@@ -10,6 +10,8 @@ import com.imooc.utils.CookieUtils;
 import com.imooc.utils.JsonUtils;
 import com.imooc.utils.MD5Utils;
 import com.imooc.utils.RedisOperator;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -101,6 +103,32 @@ public class PassportController extends BaseController {
 
     @ApiOperation(value = "用户登录", notes = "用户登录", httpMethod = "POST")
     @PostMapping("/login")
+    @HystrixCommand(
+            commandKey = "loginFail", //全局唯一的标识服务，默认函数名称
+            groupKey = "password", //全局服务分组，用于组织仪表盘，统计信息。默认类名
+            fallbackMethod = "loginFail", // 同一个类里  public private 都可以
+            //列表中的exception  不会触发降级
+//            ignoreExceptions = {IllegalArgumentException.class}
+            //线程相关的属性
+            //线程组， 多个服务可以共用一个线程组
+            threadPoolKey = "threadPoolA",
+            threadPoolProperties = {
+                    //核心线程数
+                    @HystrixProperty(name = "coreSize", value = "20"),
+                    // size>0 LinkedBlockingQueue -> 请求等待的队列
+                    // 默认-1 SynchronousQueue -> 不存储元素的阻塞队列
+                    @HystrixProperty(name = "maxQueueSize", value = "20"),
+                    // 在maxQueueSize = -1 的时候无效，队列没有达到maxQueueSize依然拒绝
+                    @HystrixProperty(name = "queueSizeRejectionThreshold", value = "15"),
+                    // (线程池)统计窗口持续时间
+                    @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "1024"),
+                    // (线程池)窗口内桶子的数量
+                    @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "18"),
+            },
+            commandProperties = {
+                    //TODO 熔断降级相关属性  也可以放在这里
+            }
+    )
     public IMOOCJSONResult login(@RequestBody UserBO userBO,
                                  HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -135,6 +163,13 @@ public class PassportController extends BaseController {
         return IMOOCJSONResult.ok(userResult);
     }
 
+
+    public IMOOCJSONResult loginFail(@RequestBody UserBO userBO,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response,
+                                     Throwable throwable) throws Exception {
+        return IMOOCJSONResult.errorMsg("验证码输错了(模仿12306)");
+    }
 
     /**
      * 注册登录成功后，同步cookie和redis中的购物车数据
