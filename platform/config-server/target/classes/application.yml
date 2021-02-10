@@ -1,0 +1,39 @@
+server:
+  port: 20003
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/wjwjwj2223/foodie-cloud-config.git
+          force-pull: true
+#          将配置文件放到接入方服务名称对应的文件夹下面
+          search-paths: '{application}'
+          default-label: main
+
+
+#  EureKa 注册中心
+#######
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka/
+
+
+
+# 开启所有的actuator-endpoint
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        # include: health, info, ...
+  security:
+    enable: false
