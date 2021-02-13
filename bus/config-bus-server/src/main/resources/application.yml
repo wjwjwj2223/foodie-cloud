@@ -1,0 +1,20 @@
+server:
+  port: 20003
+
+spring:
+  application:
+    name: config-bus-server
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/wjwjwj2223/foodie-cloud-config.git
+          force-pull: true
+#          将配置文件放到接入方服务名称对应的文件夹下面
+          search-paths: '{application}'
+          default-label: main
