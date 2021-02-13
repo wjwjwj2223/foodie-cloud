@@ -4,8 +4,10 @@ server:
 spring:
   datasource: # 数据源的相关配置
     # 拆分数据源到独立的database scheme
-    url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
-    password: 11111111
+#    url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+#    password: root
+    url: ${mariadb.url}
+    password: ${mariadb.password}
   redis:
     # Redis 单机单实例
     database: 0
@@ -28,17 +30,19 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 开启所有的actuator-endpoint
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-        # include: health, info, ...
-  security:
-    enable: false
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#        # include: health, info, ...
+#  security:
+#    enable: false
+
+
 
 hystrix:
   command:

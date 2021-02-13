@@ -4,8 +4,10 @@ server:
 spring:
   datasource: # 数据源的相关配置
     # 拆分数据源到独立的database scheme
-    url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
-    password: 11111111
+#    url: jdbc:mysql://localhost:3306/foodie-shop?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+#    password: root
+    url: ${mariadb.url}
+    password: ${mariadb.password}
   redis:
     # Redis 单机单实例
     database: 0
@@ -28,14 +30,56 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 开启所有的actuator-endpoint
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-        # include: health, info, ...
-  security:
-    enable: false
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#        # include: health, info, ...
+#  security:
+#    enable: false
+
+
+
+hystrix:
+  command:
+    # 有的属性是默认值
+    default:
+      fallback:
+        enabled: true
+      circuitBreaker:
+        enabled: true
+        # 超过50% 错误  那么开启熔断
+        errorThresholdPercentage: 30
+        # 5个request之后才进行统计
+        requestVolumeThreshold: 5
+        # 10秒以后进入半开状态
+        sleepWindowInMilliseconds: 10000
+        # forceClosed forceOpen 强制关闭 强制开启
+      execution:
+        timeout:
+          enabled: true
+        # 可以指定隔离方式  是线程池还是信号量
+        isolation:
+          thread:
+            interruptOnTimeout: true
+            interruptOnFutureCancel: true
+            timeoutInMilliseconds: 4000
+      metrics:
+        rollingStats:
+          # 时间窗口统计
+          timeInMilliseconds: 20000
+          # numBuckets: 10
+        rollingPercentile:
+          # 时间窗口统计
+          timeInMilliseconds: 20000
+          # numBUckets: 10
+          bucketSize: 300
+    loginFail:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
