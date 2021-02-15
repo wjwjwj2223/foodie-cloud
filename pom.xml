@@ -38,6 +38,7 @@
         <module>platform/hystrix-dashboard</module>
         <module>platform/config-server</module>
         <module>bus/config-bus-server</module>
+        <module>bus/config-bus-client</module>
     </modules>
 
     <packaging>pom</packaging>

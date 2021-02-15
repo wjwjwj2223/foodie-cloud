@@ -13,7 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.imooc.user.mapper")
 // 扫描所有包以及相关组件包
 @ComponentScan(basePackages = {"com.imooc", "org.n3r.idworker"})
-@EnableEurekaClient
+@EnableDiscoveryClient
 // 开启熔断降级
 @EnableCircuitBreaker
 public class UserApplication {
