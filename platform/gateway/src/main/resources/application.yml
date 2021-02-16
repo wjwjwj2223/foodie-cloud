@@ -1,0 +1,33 @@
+# 可以尝试集成 config-server 中心来配置
+
+spring:
+  application:
+    name: platform-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true
+server:
+  port: 20004
+
+# eureka 配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka/
+
+
+# 开启所有的actuator-endpoint
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        # include: health, info, ...
+  security:
+    enable: false

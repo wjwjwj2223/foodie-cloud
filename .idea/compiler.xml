@@ -33,6 +33,7 @@
         <module name="foodie-item-service" />
         <module name="foodie-shopcart-web" />
         <module name="hystrix-dashboard" />
+        <module name="gateway" />
         <module name="foodie-item-mapper" />
         <module name="config-bus-client" />
         <module name="foodie-user-mapper" />
