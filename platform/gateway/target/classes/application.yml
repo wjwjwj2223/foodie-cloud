@@ -11,6 +11,24 @@ spring:
     allow-bean-definition-overriding: true
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            # 返回的资源共享给请求来源
+            allowed-origins:
+              - "http://localhost:8080"
+              - "http://shop.z.mukewang.com:8080"
+              - "http://center.z.mukewang.com:8080"
+              - "http://shop.z.mukewang.com"
+              - "http://center.z.mukewang.com"
+              - "*"
+            # 允许携带认证信息 比如 cookie authorization
+            allow-credentials: true
+            allowed-headers: "*"
+            allowed-methods: "*"
+            expose-headers: "*"
+            # 表示options可以在浏览器缓存多久
+            max-age: 600
       discovery:
         locator:
           enabled: false

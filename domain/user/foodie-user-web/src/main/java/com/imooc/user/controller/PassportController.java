@@ -1,5 +1,9 @@
 package com.imooc.user.controller;
 
+import com.imooc.auth.AuthService;
+import com.imooc.auth.pojo.Account;
+import com.imooc.auth.pojo.AuthCode;
+import com.imooc.auth.pojo.AuthReponse;
 import com.imooc.controller.BaseController;
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.pojo.ShopcartBO;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Api(value = "注册登录", tags = {"用于注册登录的相关接口"})
@@ -39,6 +44,13 @@ public class PassportController extends BaseController {
 
     @Autowired
     private UserApplicationProperties userApplicationProperties;
+
+    @Autowired
+    private AuthService authService;
+
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String REFRESH_TOKEN_HEADER = "refresh-token";
+    private static final String UID_HEADER = "imooc-user-id";
 
     @ApiOperation(value = "用户名是否存在", notes = "用户名是否存在", httpMethod = "GET")
     @GetMapping("/usernameIsExist")
@@ -65,7 +77,7 @@ public class PassportController extends BaseController {
                                   HttpServletRequest request,
                                   HttpServletResponse response) {
 
-        if (userApplicationProperties.isDisableRegistration()) {
+        if (!userApplicationProperties.isDisableRegistration()) {
             log.info("user registration request is blocked - {}", userBO.getUsername());
             return IMOOCJSONResult.errorMsg("当前注册用户过多 请稍后再试");
         }
@@ -160,6 +172,14 @@ public class PassportController extends BaseController {
         if (userResult == null) {
             return IMOOCJSONResult.errorMsg("用户名或密码不正确");
         }
+
+        AuthReponse token = authService.tokenize(userResult.getId());
+        if (!AuthCode.SUCCESS.equals(token.getCode())) {
+            log.error("Token error - uid={}", userResult.getId());
+            return IMOOCJSONResult.errorMsg("Token error");
+        }
+        //将token添加到header中
+        addAuth2Header(response, token.getAccount());
 
         userResult = setNullProperty(userResult);
 
@@ -277,6 +297,16 @@ public class PassportController extends BaseController {
     public IMOOCJSONResult logout(@RequestParam String userId,
                                   HttpServletRequest request,
                                   HttpServletResponse response) {
+        Account account = Account.builder()
+                .token(request.getHeader(AUTH_HEADER))
+                .token(request.getHeader(REFRESH_TOKEN_HEADER))
+                .userId(userId)
+                .build();
+        AuthReponse authReponse = authService.delete(account);
+        if (!AuthCode.SUCCESS.equals(authReponse.getCode())) {
+            log.error("token error - uid {}", userId);
+            return IMOOCJSONResult.errorMsg("Token Error");
+        }
 
         // 清除用户的相关信息的cookie
         CookieUtils.deleteCookie(request, response, "user");
@@ -288,4 +318,12 @@ public class PassportController extends BaseController {
         return IMOOCJSONResult.ok();
     }
 
+    private void addAuth2Header(HttpServletResponse response, Account token) {
+        response.setHeader(AUTH_HEADER, token.getToken());
+        response.setHeader(REFRESH_TOKEN_HEADER, token.getRefreshToken());
+        response.setHeader(UID_HEADER, token.getUserId());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        response.setHeader("token-exp-time", calendar.getTimeInMillis() + "");
+    }
 }

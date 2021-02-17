@@ -12,6 +12,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/auth/foodie-auth-api/pom.xml" />
         <option value="$PROJECT_DIR$/foodie-search-api/pom.xml" />
       </set>
     </option>

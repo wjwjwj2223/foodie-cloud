@@ -12,7 +12,6 @@
 
     <artifactId>foodie-search-api</artifactId>
 
-
     <dependencies>
 
         <dependency>

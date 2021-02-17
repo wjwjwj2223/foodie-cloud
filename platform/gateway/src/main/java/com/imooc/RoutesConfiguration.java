@@ -1,6 +1,7 @@
 package com.imooc;
 
 
+import com.imooc.filter.AuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.
@@ -29,9 +30,26 @@ public class RoutesConfiguration {
     private RateLimiter itemRateLimiter;
 
     @Bean
-    public RouteLocator routes(RouteLocatorBuilder builder) {
+    public RouteLocator routes(RouteLocatorBuilder builder, AuthFilter authFilter) {
+
         return  builder.routes()
-                .route(r -> r.path(
+                //auth 在网关层有很多种做法
+                //1.【最常用】 网关层或者微服务自己本地校验jwt token有效性 不向auth-service 发起远程调用
+                //2.【路由配置最简单】可以吧authfilter注册为global filter 然后在authfilter
+                //    中配置需要过滤的url pattern(可以从config-server配置)
+                //3.【路由配置也简单】可以采用interceptor(拦截器) 的方式
+                //4.【下面这种方式，最丑的方式】
+                //将其他需要登录校验的接口添加到下面
+                .route(r -> r.path("/address/list",
+                        "/address/add",
+                        "/address/update",
+                        "/address/setDefault",
+                        "/address/delete")
+                .filters(f -> f.filter(authFilter))
+                .uri("lb://FOODIE-USER-SERVICE")
+                ).route(r -> r.path("/auth-service/refresh")
+                        .uri("lb://FOODIE-AUTH-SERVICE")
+                ).route(r -> r.path(
                         "/address/**",
                         "/passport/**",
                         "/userinfo/**",
