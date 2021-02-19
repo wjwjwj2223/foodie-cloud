@@ -10,23 +10,29 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>config-server</artifactId>
+    <artifactId>zipkin-server</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-server</artifactId>
+            <version>2.12.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-autoconfigure-ui</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+
+        <!-- web  -->
+        <!-- 也可以通过rabbitmq接收       -->
+        <!--   zipkin-autoconfigure-collector-rabbitmq     -->
+        <!-- 也可以借助es保存信息     -->
+        <!-- zipkin-autoconfigure-storage-elasticsearch      -->
     </dependencies>
 
     <build>
@@ -47,4 +53,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

@@ -24,7 +24,18 @@ spring:
 #    password: imooc
 #    cluster:
 #      nodes: 192.168.1.201:6379,192.168.1.202:6379,192.168.1.203:6379,192.168.1.204:6379,192.168.1.205:6379,192.168.1.206:6379
-
+  zipkin:
+    base-url: http://ZIPKIN-SERVER/
+    discovery-client-enabled: true
+#    防止项目中引入 rabbitmq 等组件 zipkin底层就会走 rabbitmq
+    sender:
+      type: web
+    locator:
+      discovery:
+        enabled: true
+    sleuth:
+      sampler:
+        probability: 1
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
