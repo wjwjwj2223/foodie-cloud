@@ -4,11 +4,13 @@ import com.imooc.controller.BaseController;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.PayMethod;
 import com.imooc.order.pojo.OrderStatus;
+import com.imooc.order.pojo.bo.OrderStatusCheckBO;
 import com.imooc.order.pojo.bo.PlaceOrderBO;
 import com.imooc.order.pojo.bo.SubmitOrderBO;
 import com.imooc.order.pojo.vo.MerchantOrdersVO;
 import com.imooc.order.pojo.vo.OrderVO;
 import com.imooc.order.service.OrderService;
+import com.imooc.order.stream.CheckOrderTopic;
 import com.imooc.pojo.IMOOCJSONResult;
 import com.imooc.pojo.ShopcartBO;
 import com.imooc.utils.CookieUtils;
@@ -21,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +49,9 @@ public class OrdersController extends BaseController {
 
     @Autowired
     private RedisOperator redisOperator;
+
+    @Autowired
+    private CheckOrderTopic orderStatusProducer;
 
     @ApiOperation(value = "用户下单", notes = "用户下单", httpMethod = "POST")
     @PostMapping("/create")
@@ -85,6 +91,13 @@ public class OrdersController extends BaseController {
         redisOperator.set(FOODIE_SHOPCART + ":" + submitOrderBO.getUserId(), JsonUtils.objectToJson(shopcartList));
         // 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端的cookie
         CookieUtils.setCookie(request, response, FOODIE_SHOPCART, JsonUtils.objectToJson(shopcartList), true);
+
+        // orderStatus 检查 可以采用更短的时间 在consumer 重新投递消息
+        OrderStatusCheckBO orderStatusCheckBO = new OrderStatusCheckBO();
+        orderStatusCheckBO.setOrderID(orderId);
+        orderStatusProducer.output().send(MessageBuilder.withPayload(orderStatusCheckBO)
+                .setHeader("x-delay",3600 * 24 * 1000 + 300 * 1000)
+                .build());
 
         // 3. 向支付中心发送当前订单，用于保存支付中心的订单数据
         MerchantOrdersVO merchantOrdersVO = orderVO.getMerchantOrdersVO();

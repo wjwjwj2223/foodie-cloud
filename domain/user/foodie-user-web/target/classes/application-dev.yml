@@ -44,7 +44,7 @@ spring:
           destination: force-logout-topic
           group: force-logout-group
           consumer:
-            max-attemps: 2
+            max-attempts: 2
         force-logout-producer:
           destination: force-logout-topic
 
