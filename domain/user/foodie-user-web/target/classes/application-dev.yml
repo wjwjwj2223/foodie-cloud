@@ -36,6 +36,18 @@ spring:
     sleuth:
       sampler:
         probability: 1
+
+  cloud:
+    stream:
+      bindings:
+        force-logout-consumer:
+          destination: force-logout-topic
+          group: force-logout-group
+          consumer:
+            max-attemps: 2
+        force-logout-producer:
+          destination: force-logout-topic
+
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -35,11 +35,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.imooc</groupId>
-            <artifactId>foodie-auth-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <!--  链路追踪      -->
         <dependency>
